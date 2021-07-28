@@ -1,0 +1,12 @@
+name: FancyChat
+version: @version@
+main: com.daxton.fancychat.FancyChat
+api-version: 1.13
+prefix: FancyChat
+softdepend: [FancyCore]
+authors: [ s99889989 ]
+description: Change chat format
+commands:
+  fancychat:
+    description: Basic instructions.
+    aliases: fc
