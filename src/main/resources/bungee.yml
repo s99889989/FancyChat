@@ -1,0 +1,6 @@
+name: FancyChat
+version: @version@
+main: com.daxton.fancychat.FancyChatBungee
+prefix: FancyChat
+authors: [ s99889989 ]
+description: Change chat format

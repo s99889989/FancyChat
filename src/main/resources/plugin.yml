@@ -9,4 +9,4 @@ description: Change chat format
 commands:
   fancychat:
     description: Basic instructions.
-    aliases: fc
+    aliases: fchat

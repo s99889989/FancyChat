@@ -2,6 +2,7 @@ package com.daxton.fancychat;
 
 import com.daxton.fancychat.command.MainCommand;
 import com.daxton.fancychat.command.TabCommand;
+import com.daxton.fancychat.listener.FancyChatListener;
 import com.daxton.fancychat.listener.PlayerListener;
 import com.daxton.fancychat.task.Start;
 import org.bukkit.Bukkit;
@@ -25,8 +26,14 @@ public final class FancyChat extends JavaPlugin {
         Objects.requireNonNull(Bukkit.getPluginCommand("fancychat")).setTabCompleter(new TabCommand());
         //監聽
         Bukkit.getPluginManager().registerEvents(new PlayerListener(), fancyChat);
+        //通道監聽
+        fancyChat.getServer().getMessenger().registerOutgoingPluginChannel(fancyChat, "BungeeCord");
+        fancyChat.getServer().getMessenger().registerIncomingPluginChannel(fancyChat, "BungeeCord", new FancyChatListener());
+        //開服執行程序
         Start.execute();
     }
+
+
 
     @Override
     public void onDisable() {

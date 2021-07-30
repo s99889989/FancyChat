@@ -35,8 +35,8 @@ public class FileConfig {
 
     //重新讀取設定檔
     public static void reload(){
+        config_Map.clear();
         config_Map = ConfigLoad.execute(FancyChat.fancyChat);
-
         //設置語言設定檔
         FileConfiguration resourcePackConfig = FileConfig.config_Map.get("config.yml");
         String nowLanguage = resourcePackConfig.getString("Language");

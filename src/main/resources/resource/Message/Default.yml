@@ -1,0 +1,20 @@
+Buttons1:
+  Text: '[Yes]'
+  Color: BLUE
+  Bold: true
+  ClickEvent:
+    Action: RUN_COMMAND
+    Text: /cd reload
+  HoverEvent:
+    Action: SHOW_TEXT
+    Text: reload.
+Buttons2:
+  Text: '[No]'
+  Color: GOLD
+  Bold: false
+  ClickEvent:
+    Action: RUN_COMMAND
+    Text: /cd cast buttonNo
+  HoverEvent:
+    Action: SHOW_TEXT
+    Text: NO!
