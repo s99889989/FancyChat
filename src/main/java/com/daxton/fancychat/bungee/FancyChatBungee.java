@@ -1,7 +1,7 @@
-package com.daxton.fancychat;
+package com.daxton.fancychat.bungee;
 
-import com.daxton.fancychat.command.BungeeCommand;
-import com.daxton.fancychat.listener.BungeeCoreListener;
+import com.daxton.fancychat.bungee.command.BungeeCommand;
+import com.daxton.fancychat.bungee.listener.BungeeCoreListener;
 import net.md_5.bungee.api.plugin.Plugin;
 
 public class FancyChatBungee extends Plugin{
@@ -11,6 +11,7 @@ public class FancyChatBungee extends Plugin{
     @Override
     public void onEnable() {
         fancyChatBungee = this;
+        //getProxy().registerChannel("BungeeCord");
         getProxy().getPluginManager().registerListener(this, new BungeeCoreListener());
         getProxy().getPluginManager().registerCommand(this, new BungeeCommand());
     }

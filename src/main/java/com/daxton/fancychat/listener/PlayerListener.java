@@ -3,10 +3,14 @@ package com.daxton.fancychat.listener;
 import com.daxton.fancychat.FancyChat;
 import com.daxton.fancychat.api.ChatConversion;
 import com.daxton.fancychat.config.FileConfig;
+import com.daxton.fancychat.config.PlayerData;
 import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
+import com.google.gson.Gson;
 import net.md_5.bungee.api.ChatColor;
+import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.TextComponent;
+import net.md_5.bungee.chat.ComponentSerializer;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
@@ -24,8 +28,8 @@ public class PlayerListener implements Listener {
     //登入時
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event){
-        //Player player = event.getPlayer();
-
+        Player player = event.getPlayer();
+        PlayerData.execute(player);
     }
 
     //當玩家聊天
@@ -38,29 +42,57 @@ public class PlayerListener implements Listener {
         FileConfiguration config = FileConfig.config_Map.get("config.yml");
         //前缀
         String prefix = config.getString("prefix");
+        if(prefix == null){
+            prefix = "";
+        }
         //后缀
         String suffix = config.getString("suffix");
-
-        TextComponent prefixComponent = new TextComponent();
-
-        TextComponent suffixComponent = new TextComponent();
-
-        if(prefix != null && !prefix.isEmpty()){
-            prefixComponent = ChatConversion.valueOf(player, prefix);
+        if(suffix == null){
+            suffix = "";
         }
+
+        TextComponent prefixComponent = ChatConversion.valueOf(player, prefix);
+
         TextComponent messageComponent = ChatConversion.valueOf2(player, message);
-        if(suffix != null && !suffix.isEmpty()){
-            suffixComponent = ChatConversion.valueOf(player, prefix);
-        }
+
+        messageComponent.setColor(ChatColor.of(PlayerData.getColor(player)));
+
+        TextComponent suffixComponent = ChatConversion.valueOf(player, suffix);
+
         prefixComponent.addExtra(messageComponent);
         prefixComponent.addExtra(suffixComponent);
 
+        //player.sendMessage(PlayerData.getColor(player)+message);
         player.spigot().sendMessage(prefixComponent);
+        FancyChat.fancyChat.getLogger().info(prefixComponent.toLegacyText());
 
+        String json = ComponentSerializer.toString(prefixComponent);
+
+        BaseComponent[] baseComponents = ComponentSerializer.parse(json);
+
+        boolean bungeeCoreEnable = config.getBoolean("bungeecore.enable");
+        if(bungeeCoreEnable){
+            sendBungeeMessage(player, json);
+            //getServerList(player);
+            //sendBungeeMessage2(player, json);
+        }
     }
 
+    public static void getServerList(Player player){
+        ByteArrayDataOutput out = ByteStreams.newDataOutput();
+        out.writeUTF("GetServers");
+        player.sendPluginMessage(FancyChat.fancyChat, "BungeeCord", out.toByteArray());
+    }
+
+    public static void getPlaerList(Player player){
+        ByteArrayDataOutput out = ByteStreams.newDataOutput();
+        out.writeUTF("PlayerList");
+        out.writeUTF("pvp");
+        player.sendPluginMessage(FancyChat.fancyChat, "BungeeCord", out.toByteArray());
+    }
 
     public static void serverTp(Player player, String server){
+        FancyChat.fancyChat.getLogger().info(server);
         ByteArrayDataOutput output = ByteStreams.newDataOutput();
         output.writeUTF("Connect");
         output.writeUTF(server);
@@ -70,15 +102,29 @@ public class PlayerListener implements Listener {
 
     }
 
-    public static void serverMessage(Player player){
+    public static void sendBungeeMessage2(Player player, String message){
         ByteArrayDataOutput out = ByteStreams.newDataOutput();
-        out.writeUTF("Message");
-        out.writeUTF("roblabla");
-        out.writeUTF(ChatColor.RED + "Congrats, you just won 1$!");
+
+        out.writeUTF("ForwardToPlayer");
+        out.writeUTF("Pocaca");
+        out.writeUTF("FancyChat");
+
+        ByteArrayOutputStream msgbytes = new ByteArrayOutputStream();
+        DataOutputStream msgout = new DataOutputStream(msgbytes);
+        try {
+            msgout.writeUTF(message);
+            msgout.writeShort(123);
+        } catch (IOException exception){
+            exception.printStackTrace();
+        }
+
+        out.writeShort(msgbytes.toByteArray().length);
+        out.write(msgbytes.toByteArray());
+
         player.sendPluginMessage(FancyChat.fancyChat, "BungeeCord", out.toByteArray());
     }
 
-    public static void mm(Player player){
+    public static void sendBungeeMessage(Player player, String message){
         ByteArrayDataOutput out = ByteStreams.newDataOutput();
 
         out.writeUTF("Forward"); // So BungeeCord knows to forward it
@@ -88,7 +134,7 @@ public class PlayerListener implements Listener {
         ByteArrayOutputStream msgbytes = new ByteArrayOutputStream();
         DataOutputStream msgout = new DataOutputStream(msgbytes);
         try {
-            msgout.writeUTF("Some kind of data here"); // You can do anything you want with msgout
+            msgout.writeUTF(message); // You can do anything you want with msgout
             msgout.writeShort(123);
         } catch (IOException exception){
             exception.printStackTrace();

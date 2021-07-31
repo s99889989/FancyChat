@@ -7,7 +7,8 @@ Buttons1:
     Text: /cd reload
   HoverEvent:
     Action: SHOW_TEXT
-    Text: reload.
+    Text:
+      - 'reload.'
 Buttons2:
   Text: '[No]'
   Color: GOLD
@@ -17,4 +18,5 @@ Buttons2:
     Text: /cd cast buttonNo
   HoverEvent:
     Action: SHOW_TEXT
-    Text: NO!
+    Text:
+      - 'NO!'

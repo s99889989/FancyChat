@@ -1,4 +1,4 @@
-package com.daxton.fancychat.listener;
+package com.daxton.fancychat.bungee.listener;
 
 
 import net.md_5.bungee.api.plugin.Listener;

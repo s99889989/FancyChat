@@ -2,6 +2,7 @@ package com.daxton.fancychat.api;
 
 import com.daxton.fancychat.FancyChat;
 import com.daxton.fancycore.api.character.stringconversion.ConversionMain;
+import com.daxton.fancycore.api.character.stringconversion.ConversionMessage;
 import com.daxton.fancycore.api.other.CountWords;
 import com.daxton.fancycore.nms.ItemBaseComponent;
 import net.md_5.bungee.api.ChatColor;
@@ -20,7 +21,9 @@ public class ChatConversion {
 
     public static TextComponent valueOf(Player player, String inputString){ //LivingEntity self, LivingEntity target,
         String outputString = inputString;
-
+        if(outputString.isEmpty()){
+            new TextComponent("");
+        }
         outputString = ConversionMain.valueOf(player, null, outputString);
 
         int num1 = CountWords.count(outputString, "\\{");
@@ -51,13 +54,16 @@ public class ChatConversion {
         return new TextComponent(inputString);
     }
     public static TextComponent valueOf2(Player player, String inputString){
-        String outputString = inputString;
-        if(outputString.contains("[item]")){
 
-            outputString = outputString.replace("[item]", "`[item]`");
+        //顏色代碼轉換
+        inputString = ConversionMessage.valueOf(inputString);
+
+        if(inputString.contains("[item]")){
+
+            inputString = inputString.replace("[item]", "`[item]`");
 
             TextComponent allChat = new TextComponent("");
-            String[] outputStringArray = outputString.split("`");
+            String[] outputStringArray = inputString.split("`");
             Arrays.stream(outputStringArray).forEach(s -> {
                 if(s.equals("[item]")){
                     allChat.addExtra(toItem(player));

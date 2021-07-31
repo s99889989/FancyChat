@@ -3,7 +3,11 @@ package com.daxton.fancychat.command;
 
 import com.daxton.fancychat.FancyChat;
 import com.daxton.fancychat.config.FileConfig;
+import com.daxton.fancychat.gui.MainMenu;
+import com.daxton.fancychat.listener.PlayerListener;
 import com.daxton.fancychat.task.Reload;
+import com.google.common.io.ByteArrayDataOutput;
+import com.google.common.io.ByteStreams;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -18,7 +22,7 @@ public class MainCommand implements CommandExecutor {
             return true;
         }
 
-        if(args[0].equalsIgnoreCase("reload") && args.length == 1) {
+        if(args.length == 1 && args[0].equalsIgnoreCase("reload")) {
             Reload.execute();
             String reloadString = FileConfig.languageConfig.getString("Language.Reload");
             if(sender instanceof Player && reloadString != null){
@@ -27,8 +31,23 @@ public class MainCommand implements CommandExecutor {
             }
             FancyChat.fancyChat.getLogger().info(reloadString);
         }
+        if(args.length == 1 && args[0].equalsIgnoreCase("color")){
+            if(sender instanceof Player){
+                Player player = (Player) sender;
+                MainMenu.open(player);
+            }
 
+        }
+        if(args.length == 2 && args[0].equalsIgnoreCase("server")){
+            if(sender instanceof Player){
+                Player player = (Player) sender;
+                PlayerListener.serverTp(player, args[1]);
+            }
+
+        }
         return true;
     }
+
+
 
 }

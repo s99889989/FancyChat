@@ -2,6 +2,9 @@
 #Language (English,Chinese_TW,Chinese_CN,Portuguese_BR,Korean_KR)
 Language: English
 
-prefix: '䀂 &chat_name&-> '
+prefix: '§7§l[§a§lServer§7§l] &chat_name&-> '
 
 suffix: ''
+
+bungeecore:
+  enable: false

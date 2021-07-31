@@ -26,9 +26,6 @@ public final class FancyChat extends JavaPlugin {
         Objects.requireNonNull(Bukkit.getPluginCommand("fancychat")).setTabCompleter(new TabCommand());
         //監聽
         Bukkit.getPluginManager().registerEvents(new PlayerListener(), fancyChat);
-        //通道監聽
-        fancyChat.getServer().getMessenger().registerOutgoingPluginChannel(fancyChat, "BungeeCord");
-        fancyChat.getServer().getMessenger().registerIncomingPluginChannel(fancyChat, "BungeeCord", new FancyChatListener());
         //開服執行程序
         Start.execute();
     }
