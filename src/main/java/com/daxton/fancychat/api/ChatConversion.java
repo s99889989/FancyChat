@@ -5,8 +5,10 @@ import com.daxton.fancycore.api.character.stringconversion.ConversionMain;
 import com.daxton.fancycore.api.character.stringconversion.ConversionMessage;
 import com.daxton.fancycore.api.other.CountWords;
 import com.daxton.fancycore.nms.ItemBaseComponent;
+import com.daxton.fancycore.nms.v1_16_R3.EntityJson;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.ClickEvent;
+import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.chat.hover.content.Text;
@@ -42,7 +44,7 @@ public class ChatConversion {
             Arrays.stream(outputStringArray).forEach(s -> {
 
                 if(s.contains("{") || s.contains("}")){
-                    allChat.addExtra(toComponent(s));
+                    allChat.addExtra(toComponent(player,s));
                 }else {
                     allChat.addExtra(s);
                 }
@@ -75,6 +77,7 @@ public class ChatConversion {
         }
         return new TextComponent(inputString);
     }
+    //物品顯示設定
     public static TextComponent toItem(Player player){
         TextComponent textComponent = new TextComponent();
         textComponent.setText("[item]");
@@ -85,69 +88,23 @@ public class ChatConversion {
         }
         return textComponent;
     }
-
-    public static TextComponent toComponent(String messageString){
+    //按鈕設定
+    public static TextComponent toComponent(Player player, String messageString){
         String outputString = messageString.replace("{","").replace("}","");
         TextComponent textComponent = new TextComponent(outputString);
         if(ChatKeySet.chat_Component_Map.get(outputString) != null) {
-            Map<String, String> key = ChatKeySet.chat_Component_Map.get(outputString);
-            if(key.get("Text") != null){
-                String text = key.get("Text");
-                textComponent.setText(text);
-            }
-            if(key.get("Color") != null){
-                String color = key.get("Color");
-                try {
-                    ChatColor chatColor = ChatColor.valueOf(color);
-                    textComponent.setColor(chatColor);
-                }catch (Exception exception){
-                    textComponent.setColor(ChatColor.WHITE);
-                }
-            }
-            if(key.get("Bold") != null){
-                String bold = key.get("Bold");
-                textComponent.setBold(Boolean.parseBoolean(bold));
-            }
-            try {
-                if(key.get("ClickEventText") != null){
-                    String clickEventText = key.get("ClickEventText");
-                    if(key.get("ClickEventAction") != null){
-                        String clickEventAction = key.get("ClickEventAction");
-                        textComponent.setClickEvent(new ClickEvent(Enum.valueOf(ClickEvent.Action.class, clickEventAction), clickEventText));
-                    }else {
-                        textComponent.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, clickEventText));
-                    }
-                }else {
-                    if(key.get("ClickEventAction") != null){
-                        String clickEventAction = key.get("ClickEventAction");
-                        textComponent.setClickEvent(new ClickEvent(Enum.valueOf(ClickEvent.Action.class, clickEventAction), ""));
-                    }
-                }
+            ButtomText buttomText = ChatKeySet.chat_Component_Map.get(outputString);
+            textComponent.setText(buttomText.getText(player));
+            textComponent.setColor(buttomText.getChatColor());
+            textComponent.setBold(buttomText.isBold());
+            textComponent.setClickEvent(new ClickEvent(buttomText.getClickAction(), buttomText.getClickText(player)));
+            textComponent.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new Text(buttomText.getHoveText(player))));
+            //textComponent.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_ENTITY, EntityJson.to(player)));
 
-                if(key.get("HoverEventText") != null){
-                    String hoverEventText = key.get("HoverEventText");
-                    if(key.get("HoverEventAction") != null){
-                        String hoverEventAction = key.get("HoverEventAction");
-                        textComponent.setHoverEvent( new HoverEvent(Enum.valueOf(HoverEvent.Action.class, hoverEventAction), new Text("test1\ntest2")));
-                    }else {
-                        textComponent.setHoverEvent( new HoverEvent(HoverEvent.Action.SHOW_TEXT, new Text(hoverEventText)));
-
-                    }
-                }else {
-                    if(key.get("HoverEventAction") != null){
-                        String hoverEventAction = key.get("HoverEventAction");
-                        textComponent.setHoverEvent( new HoverEvent(Enum.valueOf(HoverEvent.Action.class, hoverEventAction), new Text("")));
-                    }
-                }
-            }catch (Exception exception){
-                //
-            }
-            return textComponent;
+            //new ComponentBuilder(id).create();
         }
-
         return textComponent;
     }
-
 
 
 }

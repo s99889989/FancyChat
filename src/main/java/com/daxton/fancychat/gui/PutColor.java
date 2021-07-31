@@ -12,8 +12,8 @@ import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryAction;
 
 import java.awt.*;
-import java.awt.datatransfer.Clipboard;
-import java.awt.datatransfer.StringSelection;
+import java.awt.datatransfer.*;
+import java.io.IOException;
 
 public class PutColor implements GuiAction {
 
@@ -44,6 +44,20 @@ public class PutColor implements GuiAction {
             StringSelection strSel = new StringSelection(str);
             clipboard.setContents(strSel, null);
 
+            Transferable pasteData = clipboard.getContents(clipboard);
+
+            if (pasteData != null) {
+                try {
+                    if (pasteData.isDataFlavorSupported(DataFlavor.stringFlavor)) {
+                        String s = (String)(pasteData.getTransferData(DataFlavor.stringFlavor));
+                        //output s
+                    }
+                } catch (UnsupportedFlavorException ex) {
+                    ex.printStackTrace();
+                } catch (IOException ex1) {
+                    ex1.printStackTrace();
+                }
+            }
         }
         if(clickType == ClickType.RIGHT){
 

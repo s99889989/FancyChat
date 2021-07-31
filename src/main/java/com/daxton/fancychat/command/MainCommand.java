@@ -2,12 +2,10 @@ package com.daxton.fancychat.command;
 
 
 import com.daxton.fancychat.FancyChat;
+import com.daxton.fancychat.bungee.task.OutTask;
 import com.daxton.fancychat.config.FileConfig;
 import com.daxton.fancychat.gui.MainMenu;
-import com.daxton.fancychat.listener.PlayerListener;
 import com.daxton.fancychat.task.Reload;
-import com.google.common.io.ByteArrayDataOutput;
-import com.google.common.io.ByteStreams;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -41,7 +39,7 @@ public class MainCommand implements CommandExecutor {
         if(args.length == 2 && args[0].equalsIgnoreCase("server")){
             if(sender instanceof Player){
                 Player player = (Player) sender;
-                PlayerListener.serverTp(player, args[1]);
+                OutTask.serverTp(player, args[1]);
             }
 
         }

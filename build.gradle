@@ -28,7 +28,7 @@ dependencies {
     compileOnly 'net.md-5:bungeecord-api:1.16-R0.4'
 
     compileOnly fileTree(dir: 'lib', include: ['FancyCore-1.1.jar'])
-    compileOnly fileTree(dir: 'lib', include: ['DeluxeChat-1.16.2.jar'])
+
 }
 
 processResources {
