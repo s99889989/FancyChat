@@ -1,10 +1,8 @@
 package com.daxton.fancychat.api;
 
-import com.daxton.fancychat.FancyChat;
 import com.daxton.fancycore.api.character.stringconversion.ConversionMain;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.ClickEvent;
-import net.md_5.bungee.api.chat.HoverEvent;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
@@ -107,7 +105,7 @@ public class ButtomText {
     }
 
     public String getText(Player player) {
-        return ConversionMain.valueOf(player, null, text);
+        return ConversionMain.valueOf(player, null, text, true);
     }
 
     public ChatColor getChatColor() {
@@ -123,10 +121,10 @@ public class ButtomText {
     }
 
     public String getClickText(Player player) {
-        return ConversionMain.valueOf(player, null, clickText);
+        return ConversionMain.valueOf(player, null, clickText, true);
     }
 
     public String getHoveText(Player player) {
-        return ConversionMain.valueOf(player, null, hoveText);
+        return ConversionMain.valueOf(player, null, hoveText, true);
     }
 }

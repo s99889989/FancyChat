@@ -1,137 +1,145 @@
-Language:
+LogMessage:
+  Reload: '§a重新讀取設定檔。'
+  Disable: '§4FancyChat 卸載。'
+  LoadFancyCore: '§aFancyCore 已加載。'
+  UnLoadFancyCore:
+    - '§4*** FancyCore未安裝或未啟用。 ***'
+    - '§4*** FancyChat將被卸載。 ***'
+OpMessage:
   Reload: '§e[FancyChat] §a重新讀取設定檔。'
-  Gui:
-    Exit:
-      Material: Spruce_Door
-      CustomModelData: 0
-      DisplayName: '§e關閉選單'
-      Lore:
-        - '§f'
-        - '§f關閉選單'
-    Define:
-      Material: Map
-      CustomModelData: 0
-      DisplayName: '§e確定'
-      Lore:
-        - '§f'
-        - '§f確定修改聊天顏色'
-    CopyColor:
-      Material: Map
-      CustomModelData: 0
-      DisplayName: '§e顏色功能'
-      Lore:
-        - '§f'
-        #- '§f左鍵:複製顏色代碼'
-        - '§f右鍵:隨機顏色代碼'
-    Color0:
-      Material: Gunpowder
-      CustomModelData: 1
-      DisplayName: '§e0'
-      Lore:
-        - '§f'
-        - '§f0'
-    Color1:
-      Material: Gunpowder
-      CustomModelData: 2
-      DisplayName: '§e1'
-      Lore:
-        - '§f'
-        - '§f1'
-    Color2:
-      Material: Gunpowder
-      CustomModelData: 3
-      DisplayName: '§e2'
-      Lore:
-        - '§f'
-        - '§f2'
-    Color3:
-      Material: Gunpowder
-      CustomModelData: 4
-      DisplayName: '§e3'
-      Lore:
-        - '§f'
-        - '§f3'
-    Color4:
-      Material: Gunpowder
-      CustomModelData: 5
-      DisplayName: '§e4'
-      Lore:
-        - '§f'
-        - '§f4'
-    Color5:
-      Material: Gunpowder
-      CustomModelData: 6
-      DisplayName: '§e5'
-      Lore:
-        - '§f'
-        - '§f5'
-    Color6:
-      Material: Gunpowder
-      CustomModelData: 7
-      DisplayName: '§e6'
-      Lore:
-        - '§f'
-        - '§f6'
-    Color7:
-      Material: Gunpowder
-      CustomModelData: 8
-      DisplayName: '§e7'
-      Lore:
-        - '§f'
-        - '§f7'
-    Color8:
-      Material: Gunpowder
-      CustomModelData: 9
-      DisplayName: '§e8'
-      Lore:
-        - '§f'
-        - '§f8'
-    Color9:
-      Material: Gunpowder
-      CustomModelData: 10
-      DisplayName: '§e9'
-      Lore:
-        - '§f'
-        - '§f9'
-    Color10:
-      Material: Gunpowder
-      CustomModelData: 11
-      DisplayName: '§eA'
-      Lore:
-        - '§f'
-        - '§fA'
-    Color11:
-      Material: Gunpowder
-      CustomModelData: 12
-      DisplayName: '§eB'
-      Lore:
-        - '§f'
-        - '§fB'
-    Color12:
-      Material: Gunpowder
-      CustomModelData: 13
-      DisplayName: '§eC'
-      Lore:
-        - '§f'
-        - '§fC'
-    Color13:
-      Material: Gunpowder
-      CustomModelData: 14
-      DisplayName: '§eD'
-      Lore:
-        - '§f'
-        - '§fD'
-    Color14:
-      Material: Gunpowder
-      CustomModelData: 15
-      DisplayName: '§eE'
-      Lore:
-        - '§f'
-        - '§fE'
-    Color15:
-      Material: Gunpowder
-      CustomModelData: 16
-      DisplayName: '§eF'
-      Lore:
-        - '§f'
-        - '§fF'
+Title: '聊天顏色'
+Gui:
+  Exit:
+    Material: Spruce_Door
+    CustomModelData: 0
+    DisplayName: '§e關閉選單'
+    Lore:
+      - '§f'
+      - '§f關閉選單'
+  Define:
+    Material: Map
+    CustomModelData: 0
+    DisplayName: '§e確定'
+    Lore:
+      - '§f'
+      - '§f確定修改聊天顏色'
+  CopyColor:
+    Material: Map
+    CustomModelData: 0
+    DisplayName: '§e顏色功能'
+    Lore:
+      - '§f'
+      - '§f左鍵:複製顏色代碼'
+      - '§f右鍵:隨機顏色代碼'
+  Color0:
+    Material: Gunpowder
+    CustomModelData: 1
+    DisplayName: '§e0'
+    Lore:
+      - '§f'
+      - '§f0'
+  Color1:
+    Material: Gunpowder
+    CustomModelData: 2
+    DisplayName: '§e1'
+    Lore:
+      - '§f'
+      - '§f1'
+  Color2:
+    Material: Gunpowder
+    CustomModelData: 3
+    DisplayName: '§e2'
+    Lore:
+      - '§f'
+      - '§f2'
+  Color3:
+    Material: Gunpowder
+    CustomModelData: 4
+    DisplayName: '§e3'
+    Lore:
+      - '§f'
+      - '§f3'
+  Color4:
+    Material: Gunpowder
+    CustomModelData: 5
+    DisplayName: '§e4'
+    Lore:
+      - '§f'
+      - '§f4'
+  Color5:
+    Material: Gunpowder
+    CustomModelData: 6
+    DisplayName: '§e5'
+    Lore:
+      - '§f'
+      - '§f5'
+  Color6:
+    Material: Gunpowder
+    CustomModelData: 7
+    DisplayName: '§e6'
+    Lore:
+      - '§f'
+      - '§f6'
+  Color7:
+    Material: Gunpowder
+    CustomModelData: 8
+    DisplayName: '§e7'
+    Lore:
+      - '§f'
+      - '§f7'
+  Color8:
+    Material: Gunpowder
+    CustomModelData: 9
+    DisplayName: '§e8'
+    Lore:
+      - '§f'
+      - '§f8'
+  Color9:
+    Material: Gunpowder
+    CustomModelData: 10
+    DisplayName: '§e9'
+    Lore:
+      - '§f'
+      - '§f9'
+  Color10:
+    Material: Gunpowder
+    CustomModelData: 11
+    DisplayName: '§eA'
+    Lore:
+      - '§f'
+      - '§fA'
+  Color11:
+    Material: Gunpowder
+    CustomModelData: 12
+    DisplayName: '§eB'
+    Lore:
+      - '§f'
+      - '§fB'
+  Color12:
+    Material: Gunpowder
+    CustomModelData: 13
+    DisplayName: '§eC'
+    Lore:
+      - '§f'
+      - '§fC'
+  Color13:
+    Material: Gunpowder
+    CustomModelData: 14
+    DisplayName: '§eD'
+    Lore:
+      - '§f'
+      - '§fD'
+  Color14:
+    Material: Gunpowder
+    CustomModelData: 15
+    DisplayName: '§eE'
+    Lore:
+      - '§f'
+      - '§fE'
+  Color15:
+    Material: Gunpowder
+    CustomModelData: 16
+    DisplayName: '§eF'
+    Lore:
+      - '§f'
+      - '§fF'

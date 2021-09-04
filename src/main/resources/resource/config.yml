@@ -2,8 +2,38 @@
 #Language (English,Chinese_TW,Chinese_CN,Portuguese_BR,Korean_KR)
 Language: English
 
-prefix: '§7§l[§a§lServer§7§l] &chat_name&-> '
+#發送純文字訊息
+#如果純粹只是要修改聊天顏色，可以使用這設應。
+#Send a plain text message.
+#If you just want to modify the chat color, you can use this setting.
+SendPlainText: false
 
+#權限前輟。
+#Prefix of permission.
+PermissionPrefix:
+  #fancychat.prefix.default
+  default: '{#FFF618}[Default] {PlayerName}-> '
+  #fancychat.prefix.vip1
+  vip1: '{#FFF628}[vip1] {PlayerName}-> '
+  #fancychat.prefix.vip2
+  vip2: '{#FFF658}[vip2] {PlayerName}-> '
+
+#權限後輟。
+#Permission suffix.
+PermissionSuffix:
+  #fancychat.suffix.default
+  default: ''
+  #fancychat.suffix.vip1
+  vip1: ''
+  #fancychat.suffix.vip2
+  vip2: ''
+
+#預設前輟。
+#Prefix by default.
+prefix: '§7§l[§a§lServer§7§l] {PlayerName}-> '
+
+#預設後輟。
+#Suffix by default.
 suffix: ''
 
 bungeecore:

@@ -3,7 +3,6 @@ package com.daxton.fancychat.command;
 
 import com.daxton.fancychat.FancyChat;
 import com.daxton.fancychat.bungee.task.OutTask;
-import com.daxton.fancychat.config.FileConfig;
 import com.daxton.fancychat.gui.MainMenu;
 import com.daxton.fancychat.task.Reload;
 import org.bukkit.command.Command;
@@ -11,6 +10,8 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+
+import static com.daxton.fancychat.config.FileConfig.languageConfig;
 
 public class MainCommand implements CommandExecutor {
 
@@ -22,10 +23,10 @@ public class MainCommand implements CommandExecutor {
 
         if(args.length == 1 && args[0].equalsIgnoreCase("reload")) {
             Reload.execute();
-            String reloadString = FileConfig.languageConfig.getString("Language.Reload");
+            String reloadString = languageConfig.getString("LogMessage.Reload");
             if(sender instanceof Player && reloadString != null){
                 Player player = (Player) sender;
-                player.sendMessage(reloadString);
+                player.sendMessage(languageConfig.getString("OpMessage.Reload")+"");
             }
             FancyChat.fancyChat.getLogger().info(reloadString);
         }

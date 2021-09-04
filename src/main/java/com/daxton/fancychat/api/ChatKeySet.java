@@ -1,10 +1,8 @@
 package com.daxton.fancychat.api;
 
-import com.daxton.fancychat.FancyChat;
 import com.daxton.fancychat.config.FileConfig;
 import com.daxton.fancycore.api.config.SearchConfigFile;
 import com.daxton.fancycore.api.config.SearchConfigMap;
-
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;

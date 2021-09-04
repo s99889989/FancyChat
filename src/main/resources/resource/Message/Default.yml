@@ -20,3 +20,15 @@ Buttons2:
     Action: SHOW_TEXT
     Text:
       - 'NO!'
+
+PlayerHealth:
+  Text: '&chat_self_health_proportion_10&'
+
+PlayerName:
+  Text: '&chat_name&'
+  Color: 4076D4
+  ShowText:
+    - '{#478504}Click to have a private chat with the player'
+  ClickEvent:
+    Action: SUGGEST_COMMAND
+    Text: '/msg &chat_name& '

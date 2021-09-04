@@ -1,65 +1,28 @@
 package com.daxton.fancychat.api;
 
 import com.daxton.fancychat.FancyChat;
-import com.daxton.fancycore.api.character.stringconversion.ConversionMain;
-import com.daxton.fancycore.api.character.stringconversion.ConversionMessage;
-import com.daxton.fancycore.api.other.CountWords;
+import com.daxton.fancychat.config.PlayerData;
+import com.daxton.fancycore.api.character.conversion.ColorConversion;
 import com.daxton.fancycore.nms.ItemBaseComponent;
-import com.daxton.fancycore.nms.v1_16_R3.EntityJson;
 import net.md_5.bungee.api.ChatColor;
-import net.md_5.bungee.api.chat.ClickEvent;
-import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
-import net.md_5.bungee.api.chat.hover.content.Text;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.Arrays;
-import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class ChatConversion {
 
-    public static TextComponent valueOf(Player player, String inputString){ //LivingEntity self, LivingEntity target,
-        String outputString = inputString;
-        if(outputString.isEmpty()){
-            new TextComponent("");
-        }
-        outputString = ConversionMain.valueOf(player, null, outputString);
-
-        int num1 = CountWords.count(outputString, "\\{");
-        int num2 = CountWords.count(outputString, "\\}");
-        to:
-        if(num1 == num2){
-            TextComponent allChat = new TextComponent("");
-            int k = 0;
-            for(int i = 0; i < num1 ; i++){
-                int head = outputString.indexOf("{", k);
-                int tail = outputString.indexOf("}",head+1);
-                outputString = outputString.replace(inputString.substring(head,tail+1), "`"+inputString.substring(head,tail+1)+"`");
-                k = tail+2;
-            }
-            String[] outputStringArray = outputString.split("`");
-            Arrays.stream(outputStringArray).forEach(s -> {
-
-                if(s.contains("{") || s.contains("}")){
-                    allChat.addExtra(toComponent(player,s));
-                }else {
-                    allChat.addExtra(s);
-                }
-            });
-
-            return allChat;
-        }
-
-        return new TextComponent(inputString);
-    }
-    public static TextComponent valueOf2(Player player, String inputString){
+    //聊天訊息處理
+    public static TextComponent valueOf(Player player, String inputString){
 
         //顏色代碼轉換
-        inputString = ConversionMessage.valueOf(inputString);
-
+        //inputString = ConversionMessage.valueOf(inputString);
+        inputString = PlayerData.getColorString(player) + inputString;
         if(inputString.contains("[item]")){
 
             inputString = inputString.replace("[item]", "`[item]`");
@@ -67,16 +30,20 @@ public class ChatConversion {
             TextComponent allChat = new TextComponent("");
             String[] outputStringArray = inputString.split("`");
             Arrays.stream(outputStringArray).forEach(s -> {
+                FancyChat.fancyChat.getLogger().info(s);
                 if(s.equals("[item]")){
                     allChat.addExtra(toItem(player));
                 }else {
-                    allChat.addExtra(s);
+                    allChat.addExtra(toColor(s));
                 }
             });
             return allChat;
+        }else {
+            return toColor(inputString);
         }
-        return new TextComponent(inputString);
+        //return new TextComponent(inputString);
     }
+
     //物品顯示設定
     public static TextComponent toItem(Player player){
         TextComponent textComponent = new TextComponent();
@@ -88,23 +55,67 @@ public class ChatConversion {
         }
         return textComponent;
     }
-    //按鈕設定
-    public static TextComponent toComponent(Player player, String messageString){
-        String outputString = messageString.replace("{","").replace("}","");
-        TextComponent textComponent = new TextComponent(outputString);
-        if(ChatKeySet.chat_Component_Map.get(outputString) != null) {
-            ButtomText buttomText = ChatKeySet.chat_Component_Map.get(outputString);
-            textComponent.setText(buttomText.getText(player));
-            textComponent.setColor(buttomText.getChatColor());
-            textComponent.setBold(buttomText.isBold());
-            textComponent.setClickEvent(new ClickEvent(buttomText.getClickAction(), buttomText.getClickText(player)));
-            textComponent.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new Text(buttomText.getHoveText(player))));
-            //textComponent.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_ENTITY, EntityJson.to(player)));
-
-            //new ComponentBuilder(id).create();
+    //聊天字串加上顏色
+    public static TextComponent toColor(String input){
+        TextComponent textComponent = new TextComponent();
+        input = translateHexColorCodes("\\{#" ,"\\}", input);
+        input = translateColorCodes("\\{#" ,"\\}", input);
+        if(input.contains("`")){
+            String[] xArray = input.split("`");
+            for(String s : xArray){
+                String[] sArray = s.split("\\|");
+                if(sArray.length == 2){
+                    TextComponent textAdd = new TextComponent(sArray[1]);
+                    if(sArray[0].length() == 6){
+                        textAdd.setColor(ChatColor.of("#"+sArray[0]));
+                    }
+                    if(sArray[0].length() == 1){
+                        textAdd.setColor(ColorConversion.hexToColor(sArray[0]));
+                    }
+                    textComponent.addExtra(textAdd);
+                }else {
+                    Pattern pattern = Pattern.compile("([A-Fa-f0-9]{6})"+"\\|");
+                    Matcher matcher = pattern.matcher(s);
+                    if(matcher.find()){
+                        FancyChat.fancyChat.getLogger().info(s);
+                    }else {
+                        textComponent.addExtra(new TextComponent(s));
+                    }
+                }
+            }
+        }else {
+            textComponent.addExtra(input);
         }
+
         return textComponent;
     }
 
+    //顏色轉換§
+    public static String translateColorCodes(String startTag, String endTag, String message) {
+        final Pattern hexPattern = Pattern.compile(startTag + "([A-Fa-f0-9]{1})" + endTag);
+        Matcher matcher = hexPattern.matcher(message);
+        StringBuffer buffer = new StringBuffer(message.length() + 4 * 8);
+        while (matcher.find()) {
+            String group = matcher.group(1);
+            //System.out.println(group);
+            matcher.appendReplacement(buffer, "`"+group+"|");
+        }
+
+        return matcher.appendTail(buffer).toString();
+    }
+
+    //16進制顏色轉換§
+    public static String translateHexColorCodes(String startTag, String endTag, String message) {
+        final Pattern hexPattern = Pattern.compile(startTag + "([A-Fa-f0-9]{6})" + endTag);
+        Matcher matcher = hexPattern.matcher(message);
+        StringBuffer buffer = new StringBuffer(message.length() + 4 * 8);
+        while (matcher.find()) {
+            String group = matcher.group(1);
+            //System.out.println(group);
+            matcher.appendReplacement(buffer, "`"+group+"|");
+        }
+
+        return matcher.appendTail(buffer).toString();
+    }
 
 }
